@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showContact() {
+        if(contactList.size()==0) return;
         Contact contact = contactList.get(index);
         binding.txtName.setText(contact.name);
         binding.txtPhoneNumber.setText(contact.phoneNumber);
