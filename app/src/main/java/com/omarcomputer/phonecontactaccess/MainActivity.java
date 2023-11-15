@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Contact contact = contactList.get(index);
         binding.txtName.setText(contact.name);
         binding.txtPhoneNumber.setText(contact.phoneNumber);
-        binding.txtCurrentContact.setText(""+ index + "/"+ contactList.size());
+        binding.txtCurrentContact.setText(""+ (index+1) + "/"+ contactList.size());
     }
 
     private void getContacts() {
@@ -57,14 +57,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         contactList.clear();
-        ContentResolver contentResolver = getContentResolver();
-        Cursor cursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME + " ASC");
+        ContentResolver contentResolver = this.getContentResolver(); // ContentResolver : obtenir le contenu du téléphone
+        Cursor cursor = contentResolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, // type du contenu
+                null,
+                null,
+                null,
+                ContactsContract.Contacts.DISPLAY_NAME + " ASC");
         if(cursor !=null) {
             try {
                 while(cursor.moveToNext()) {
                     String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
                     String phoneNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    contactList.add(new Contact(name, phoneNumber));
+                    Contact contact = new Contact(name, phoneNumber);
+                    contactList.add(contact);
                 }
             } catch (Exception e) {
 
